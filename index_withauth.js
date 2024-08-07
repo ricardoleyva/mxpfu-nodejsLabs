@@ -7,7 +7,7 @@ const app = express();
 const PORT = 5000;
 
 // Initialize session middleware with options
-app.use(session({ secret: "fingerpint", resave: true, saveUninitialized: true }));
+app.use(session({ secret: "fingerprint", resave: true, saveUninitialized: true }));
 
 // Middleware for user authentication
 app.use("/user", (req, res, next) => {

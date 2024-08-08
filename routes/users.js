@@ -25,7 +25,7 @@ let users = [
 // GET request: Retrieve all users
 router.get("/", (req, res) => {
   //res.send(users);
-  res.send(JSON.stringify({users}, null, 4));
+  res.send(JSON.stringify({ users }, null, 4));
 });
 
 // GET by specific ID request: Retrieve a single user with email ID
@@ -36,6 +36,41 @@ router.get("/:email", (req, res) => {
   let filtered_user = users.filter((user) => user.email === email);
   //Send the filtered_user array as ther response to the client
   res.send(filtered_user);
+});
+
+router.get("/lastName/:lastName", (req, res) => {
+  const lastName = req.params.lastName;
+  let filtered_user = users.filter((user) => user.lastName === lastName);
+  res.send(filtered_user);
+});
+
+// Function to convert a date string in the format "dd-mm-yyyy" to a Date object
+function getDateFromString(strDate) {
+  let [dd, mm, yyyy] = strDate.split("-");
+  return new Date(yyyy + "/" + mm + "/" + dd);
+}
+
+// Define a route handler for GET requests to the "/sort/asc" endpoint
+router.get("/sort/asc/", (req, res) => {
+  // Sort the users array by DOB in ascending order
+  let sorted_users = users.sort(function (a, b) {
+    let d1 = getDateFromString(a.DOB);
+    let d2 = getDateFromString(b.DOB);
+    return d1 - d2;
+  });
+  // Send the sorted_users array as the response to the client
+  res.send(sorted_users);
+});
+// Define a route handler for GET requests to the "/sort/dsc" endpoint
+router.get("/sort/dsc/", (req, res) => {
+  // Sort the users array by DOB in ascending order
+  let sorted_users = users.sort(function (a, b) {
+    let d1 = getDateFromString(a.DOB);
+    let d2 = getDateFromString(b.DOB);
+    return d2 - d1;
+  });
+  // Send the sorted_users array as the response to the client
+  res.send(sorted_users);
 });
 // POST request: Create a new user
 router.post("/", (req, res) => {
